@@ -2,7 +2,6 @@
   <v-app dark>
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
       app
@@ -52,21 +51,8 @@
       app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <!-- <v-btn
-        
-        @click.stop="logout"
-      >
-      Exit
-        <v-icon>mdi-logout</v-icon>
-      </v-btn> -->
     </v-app-bar>
     <v-content>
       <v-container>
@@ -98,8 +84,8 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          title: 'Cases',
+          to: '/cases'
         }
       ],
       miniVariant: false,

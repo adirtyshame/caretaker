@@ -63,6 +63,12 @@ export default {
         services: {
           auth: true,
           realtimeDb: true,
+          firestore: {
+            static: false, // default
+            preload: false, // default
+            chunkName: process.env.NODE_ENV !== 'production' ? 'firebase-auth' : '[id]', // default
+            enablePersistence: true
+          }
         }
       }
     ]
@@ -101,7 +107,7 @@ export default {
   ** Build configuration
   */
   build: {
-    transpile: [/^nuxt-fire/,/^firebaseui/],
+    transpile: [/^nuxt-fire/],
     /*
     ** You can extend webpack config here
     */

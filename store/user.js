@@ -31,14 +31,37 @@ export const actions = {
                 context.dispatch('setAuthenticatedUser', result.user)
                 resolve()
             } catch(e) {
-                console.err(e)
+                console.error(e)
+                reject(e)
+            }
+        });
+      },
+      async passwordSignIn(context, {email, password}) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const result = await this.$fireAuth.signInWithEmailAndPassword(email, password)
+                context.dispatch('setAuthenticatedUser', result.user)
+                resolve()
+            } catch(e) {
+                console.error(e)
+                reject(e)
+            }
+        });
+      },
+      async register(context, {email, password}) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const result = await this.$fireAuth.createUserWithEmailAndPassword(email, password)
+                context.dispatch('setAuthenticatedUser', result.user)
+                resolve()
+            } catch(e) {
+                console.error(e)
                 reject(e)
             }
         });
       },
     setAuthenticatedUser(context, user) {
         if (user) {
-            debugger
             const u = {
                 uid: user.uid,
                 displayName: user.displayName,
@@ -47,6 +70,7 @@ export const actions = {
                 providerId: user.providerData[0].providerId
             }
             context.commit('setUser', u)
+            this.$fireStore.collection('users').doc(u.uid).set(u)
         } else {
             context.commit('setUser', undefined)
         }
