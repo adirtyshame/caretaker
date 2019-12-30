@@ -31,6 +31,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/auth.js',
     '~/plugins/snotify.js',
     '~/plugins/nuxt-offline-alert.js'
   ],

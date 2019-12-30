@@ -2,14 +2,14 @@
   <v-card>
     <v-card-title>
       Pflegefälle
-      <v-spacer></v-spacer>
+      <!-- <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        label="Search"
+        label="Suche"
         single-line
         hide-details
-      ></v-text-field>
+      ></v-text-field> -->
     </v-card-title>
     <v-card-text>
       <!-- <v-data-table :headers="headers" :items="cases" :search="search">
@@ -111,11 +111,11 @@ export default {
         uid: undefined
       },
       headers: [
-        { text: 'Name', value: 'lastName' },
-        { text: 'First Name', value: 'firstName', align: 'center' },
-        { text: 'Address 1', value: 'address1', align: 'center' },
-        { text: 'Address 2', value: 'address2', align: 'center' },
-        { text: 'Actions', value: 'action', align: 'center', sortable: false }
+        { text: 'Nachname', value: 'lastName' },
+        { text: 'Vorname', value: 'firstName', align: 'center' },
+        { text: 'Straße Hausnummer', value: 'address1', align: 'center' },
+        { text: 'Postleitzahl Ort', value: 'address2', align: 'center' },
+        { text: 'Aktionen', value: 'action', align: 'center', sortable: false }
       ]
     }
   },
@@ -124,7 +124,7 @@ export default {
       return this.$store.getters['cases/getCases']
     },
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag bearbeiten'
     }
   },
   methods: {
@@ -139,7 +139,7 @@ export default {
 
     deleteItem(track) {
       const index = this.cases.indexOf(track)
-      confirm('Are you sure you want to delete this item?') &&
+      confirm('Möchten Sie diesen Eintrag wirklich löschen?') &&
         this.$store.dispatch('cases/remove', track)
     },
 
