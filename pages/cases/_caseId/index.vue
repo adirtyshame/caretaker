@@ -15,8 +15,8 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <p>{{ currentCase.address1 }}</p>
-      <p>{{ currentCase.address2 }}</p>
+      <p>Address 1: {{ currentCase.address1 }}</p>
+      <p>Address 2: {{ currentCase.address2 }}</p>
       <p>Total distance: {{ totalDistance }}km</p>
       <p>Total effort: {{ totalEffort }}h</p>
       <v-data-table :headers="headers" :items="tracks" :search="search">
