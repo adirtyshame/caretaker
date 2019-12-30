@@ -9,7 +9,7 @@
       sm8
       md6
     >
-      <nuxt-link to="/cases">Go to cases</nuxt-link>
+      <nuxt-link to="/cases">Fälle bearbeiten</nuxt-link>
       
     </v-flex>
   </v-layout>

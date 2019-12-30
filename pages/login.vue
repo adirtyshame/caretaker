@@ -11,15 +11,14 @@
         type="password"
         v-model="password">
       </v-text-field>
-      <nuxt-link to="/register">Register</nuxt-link>
+      <nuxt-link to="/register">Neuer Benutzer?</nuxt-link>
     </v-card-text>
     <v-card-actions>
-      <v-btn outlined @click="googleSignIn" color="#4285F4">
-        Sign in with Google&nbsp;
-        <v-icon>mdi-google</v-icon>
-      </v-btn>
       <v-btn outlined @click="passwordSignIn" color="#4285F4">
-        Sign in
+        Anmelden
+      </v-btn>
+      <v-btn outlined @click="googleSignIn" color="#4285F4">
+        <v-icon>mdi-google</v-icon>&nbsp;Mit Google anmelden
       </v-btn>
     </v-card-actions>
   </v-card>

@@ -15,7 +15,7 @@
             <v-icon>mdi-account</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Profile</v-list-item-title>
+            <v-list-item-title>Profil</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -40,7 +40,7 @@
             <v-icon>mdi-logout</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Logout</v-list-item-title>
+            <v-list-item-title>Abmelden</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -82,12 +82,12 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Startseite',
           to: '/'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Cases',
+          title: 'Pflegefälle',
           to: '/cases'
         }
       ],

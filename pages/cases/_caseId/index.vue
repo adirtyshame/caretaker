@@ -15,19 +15,19 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <p>Address 1: {{ currentCase.address1 }}</p>
-      <p>Address 2: {{ currentCase.address2 }}</p>
-      <p>Total distance: {{ totalDistance }}km</p>
-      <p>Total effort: {{ totalEffort }}h</p>
+      <p>Straße Hausnummer: {{ currentCase.address1 }}</p>
+      <p>PLZ Ort: {{ currentCase.address2 }}</p>
+      <p>Gesamtstrecke: {{ totalDistance }}km</p>
+      <p>Zeitaufwand: {{ totalEffort }}h</p>
       <v-data-table :headers="headers" :items="tracks" :search="search">
         <template v-slot:top>
           <v-toolbar flat>
-            <v-toolbar-title>Tracks</v-toolbar-title>
+            <v-toolbar-title>Anfahrten</v-toolbar-title>
             <!-- <v-divider class="mx-4" inset vertical></v-divider> -->
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark class="mb-2" v-on="on">New Track</v-btn>
+                <v-btn color="primary" dark class="mb-2" v-on="on">Nee Anfahrt</v-btn>
               </template>
               <v-card>
                 <v-card-title>
@@ -52,8 +52,8 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                  <v-btn color="blue darken-1" text @click="close">Abbrechen</v-btn>
+                  <v-btn color="blue darken-1" text @click="save">Speichern</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -72,7 +72,7 @@
           <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="mdi-alert">
-          Your search for "{{ search }}" found no results.
+          Keine Ergebnisse für "{{ search }}" gefunden.
         </v-alert>
       </v-data-table>
     </v-card-text>

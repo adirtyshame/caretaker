@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      Nursing cases
+      Pflegefälle
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -43,7 +43,7 @@
           v-for="item of cases"
           :key="item.uid"
           :to="`/cases/${item.uid}`"
-        >{{ item.lastName }}, {{ item.firstName }}<v-spacer /><v-icon>mdi-chevron-right</v-icon></v-list-item>
+        >{{ item.lastName }}, {{ item.firstName }} <v-subheader>{{ item.address1 }} {{ item.address2 }}</v-subheader><v-spacer /><v-icon>mdi-chevron-right</v-icon></v-list-item>
       </v-list>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
