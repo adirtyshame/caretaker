@@ -40,7 +40,6 @@ export const actions = {
         .doc(caseId)
         .collection('tracks')
         .add(track)
-    context.dispatch('fetch', caseId)
   },
   remove(context, {caseId, track}) {
     this.$fireStore
@@ -51,7 +50,6 @@ export const actions = {
         .collection('tracks')
         .doc(track.uid)
         .delete()
-    context.dispatch('fetch', caseId)
   },
   save(context, {caseId, track}) {
     if (context.state.tracks.find(tr => tr.uid === track.uid)) {
@@ -63,7 +61,6 @@ export const actions = {
         .collection('tracks')
         .doc(track.uid)
         .set(track, {merge: true})
-      context.dispatch('fetch', caseId)
     }
   },
   fetch(context, caseUid) {
@@ -73,19 +70,15 @@ export const actions = {
       .collection('cases')
       .doc(caseUid)
       .collection('tracks')
-        .get()
-        .then(snapshot => {
-          const tracks = []
-          snapshot.forEach(doc => {
-            tracks.push({
-              uid: doc.id,
-              ...doc.data()
-            })
+      .onSnapshot(snapshot => {
+        const tracks = []
+        snapshot.forEach(doc => {
+          tracks.push({
+            uid: doc.id,
+            ...doc.data()
           })
-          context.commit('setTracks', tracks)
         })
-        .catch(err => {
-          console.log('Error getting tracks', err)
-        })
+        context.commit('setTracks', tracks)
+      })
   }
 }
