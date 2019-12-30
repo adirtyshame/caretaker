@@ -2,45 +2,19 @@
   <v-card>
     <v-card-title>
       Pflegefälle
-      <!-- <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
         label="Suche"
         single-line
         hide-details
-      ></v-text-field> -->
+      ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <!-- <v-data-table :headers="headers" :items="cases" :search="search">
-        <template v-slot:top>
-          <v-toolbar flat>
-            <v-toolbar-title>Tracks</v-toolbar-title>
-            <v-spacer></v-spacer>
-          </v-toolbar>
-        </template>
-        <template slot="item" slot-scope="props">
-          <tr @click="openItem(props.item)">
-            <td>{{ props.item.lastName }}</td>
-            <td class="text-xs-right">{{ props.item.firstName }}</td>
-            <td class="text-xs-right">{{ props.item.address1 }}</td>
-            <td class="text-xs-right">{{ props.item.address2 }}</td>
-          </tr>
-        </template>
-        <template v-slot:item.action="{ item }">
-          <v-icon class="mr-2" @click="editItem(item)">mdi-file-edit-outline</v-icon>
-          <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
-        </template>
-        <v-alert
-          slot="no-results"
-          :value="true"
-          color="error"
-          icon="mdi-alert"
-        >Your search for "{{ search }}" found no results.</v-alert>
-      </v-data-table> -->
       <v-list>
         <v-list-item
-          v-for="item of cases"
+          v-for="item of filteredCases"
           :key="item.uid"
           :to="`/cases/${item.uid}`"
         >{{ item.lastName }}, {{ item.firstName }} <v-subheader>{{ item.address1 }} {{ item.address2 }}</v-subheader><v-spacer /><v-icon>mdi-chevron-right</v-icon></v-list-item>
@@ -94,6 +68,7 @@ export default {
   data() {
     return {
       search: '',
+      filteredCases: [],
       dialog: false,
       editedIndex: -1,
       editedItem: {
@@ -169,10 +144,16 @@ export default {
       this.close()
     }
   },
+  mounted() {
+    this.filteredCases = this.cases;
+  },
   watch: {
     dialog(val) {
       val || this.close()
-    }
+    },
+    search(val) {
+      this.filteredCases = this.cases.filter(c => [c.lastName, c.firstName, c.address1, c.address2].join(' ').includes(val))
+    },
   }
 }
 </script>
