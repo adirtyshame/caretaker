@@ -34,8 +34,17 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item>
-          <v-switch :label="`Dark Theme`" v-model="goDark" @change="setTheme" color="primary"></v-switch>
+        <v-list-item
+          to="/settings"
+          router
+          exact
+        >
+          <v-list-item-action>
+            <v-icon>mdi-settings</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'Einstellungen'" />
+          </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item
@@ -105,13 +114,6 @@ export default {
     logout() {
       this.$store.dispatch(('user/logout'));
     },
-    setTheme() {
-            if (this.goDark == true) {
-                return (this.$vuetify.theme.dark = true);
-            } else {
-                return (this.$vuetify.theme.dark = false);
-            }
-        }
   },
   mounted() {
     this.$store.dispatch('cases/fetch')

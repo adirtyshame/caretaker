@@ -1,22 +1,32 @@
 export const state = () => {
     return {
         user: undefined,
+        darkmode: true,
     }
 }
 
 export const mutations = {
     setUser(state, user) {
         state.user = user
+    },
+    setDarkMode(state, mode) {
+        state.darkmode = mode
     }
 }
 
 export const getters = {
     getUser(state) {
         return state.user
+    },
+    getDarkMode(state) {
+        return state.darkmode
     }
 }
 
 export const actions = {
+    darkMode(context, mode) {
+        context.commit('setDarkMode', mode)
+    },
     logout(context) {
         this.$fireAuth.signOut().then(() => {
             context.dispatch('setAuthenticatedUser', null)
