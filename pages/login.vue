@@ -1,7 +1,7 @@
 <template>
   <v-card class="cont">
     <v-list-item>
-      <v-list-item-avatar color="pink">
+      <v-list-item-avatar color="white">
         <img src="/icon.png" alt="" srcset="">
       </v-list-item-avatar>
       <v-list-item-content>
