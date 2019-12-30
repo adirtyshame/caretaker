@@ -4,7 +4,43 @@
       <v-btn @click="$router.back()" icon>
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
-      {{ currentCase.lastName }}, {{ currentCase.firstName }}
+      {{ currentCase.lastName }}, {{ currentCase.firstName }}&nbsp;
+      <v-btn @click="editCase" icon><v-icon>mdi-pencil-outline</v-icon></v-btn>
+      <v-dialog v-model="dialog1" max-width="500px">
+              <!-- <template v-slot:activator="{ on }">
+                <v-btn class="mb-2" v-on="on" icon><v-icon>mdi-account-edit-outline</v-icon></v-btn>
+              </template> -->
+              <v-card>
+                <v-card-title>
+                  <span class="headline">Pflegefall bearbeiten</span>
+                </v-card-title>
+
+                <v-card-text>
+                  <v-container>
+                    <v-col>
+                      <v-row cols="12" sm="6" md="4">
+                        <v-text-field v-model="editedCase.lastName" label="Nachname"></v-text-field>
+                      </v-row>
+                      <v-row cols="12" sm="6" md="4">
+                        <v-text-field v-model="editedCase.firstName" label="Vorname"></v-text-field>
+                      </v-row>
+                      <v-row cols="12" sm="6" md="4">
+                        <v-text-field v-model="editedCase.address1" label="Straße Hausnummer"></v-text-field>
+                      </v-row>
+                      <v-row cols="12" sm="6" md="4">
+                        <v-text-field v-model="editedCase.address2" label="Postleitzahl Ort"></v-text-field>
+                      </v-row>
+                    </v-col>
+                  </v-container>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeCase">Abbrechen</v-btn>
+                  <v-btn color="blue darken-1" text @click="saveCase">Speichern</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -38,13 +74,13 @@
                   <v-container>
                     <v-col>
                       <v-row cols="12" sm="6" md="4">
-                        <v-textarea v-model="editedItem.description" label="Description"></v-textarea>
+                        <v-textarea v-model="editedItem.description" label="Beschreibung"></v-textarea>
                       </v-row>
                       <v-row cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedItem.effort" label="Effort (h)"></v-text-field>
+                        <v-text-field v-model="editedItem.effort" label="Aufwand (h)"></v-text-field>
                       </v-row>
                       <v-row cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedItem.distance" label="Distance (km)"></v-text-field>
+                        <v-text-field v-model="editedItem.distance" label="Strecke (km)"></v-text-field>
                       </v-row>
                     </v-col>
                   </v-container>
@@ -68,7 +104,7 @@
             </tr>
         </template>
         <template v-slot:item.action="{ item }">
-          <v-icon class="mr-2" @click="editItem(item)">mdi-file-edit-outline</v-icon>
+          <v-icon class="mr-2" @click="editItem(item)">mdi-pencil-outline</v-icon>
           <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="mdi-alert">
@@ -86,6 +122,7 @@ export default {
     return {
       search: '',
       dialog: false,
+      dialog1: false,
       editedIndex: -1,
       editedItem: {
         description: '',
@@ -101,11 +138,25 @@ export default {
         uid: undefined,
         timestamp: ''
       },
+      editedCase: {
+        lastName: '',
+        firstName: '',
+        address2: '',
+        address2: '',
+        uid: '',
+      },
+      defaultCase: {
+        lastName: '',
+        firstName: '',
+        address2: '',
+        address2: '',
+        uid: '',
+      },
       headers: [
-        { text: 'Description', value: 'description' },
-        { text: 'Effort (h)', value: 'effort', align: 'center' },
-        { text: 'Distance (km)', value: 'distance', align: 'center' },
-        { text: 'Actions', value: 'action', align: 'center', sortable: false }
+        { text: 'Beschreibung', value: 'description' },
+        { text: 'Aufwand (h)', value: 'effort', align: 'center' },
+        { text: 'Strecke (km)', value: 'distance', align: 'center' },
+        { text: 'Aktionen', value: 'action', align: 'center', sortable: false }
       ]
     }
   },
@@ -125,7 +176,7 @@ export default {
       return this.tracks.reduce((sum, curr) => sum + curr.effort, 0)
     },
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag bearbeiten'
     }
   },
   methods: {
@@ -133,6 +184,12 @@ export default {
       this.editedIndex = this.tracks.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
+    },
+
+    editCase(item) {
+      this.editedIndex = this.tracks.indexOf(item)
+      this.editedCase = Object.assign({}, this.currentCase)
+      this.dialog1 = true
     },
 
     deleteItem(track) {
@@ -149,6 +206,13 @@ export default {
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
+      }, 300)
+    },
+
+    closeCase() {
+      this.dialog1 = false
+      setTimeout(() => {
+        this.editedCase = Object.assign({}, this.defaultCase)
       }, 300)
     },
 
@@ -174,7 +238,14 @@ export default {
       }
       this.$snotify.success('Track saved')
       this.close()
+    },
+
+    saveCase() {
+      this.$store.dispatch('cases/save', this.editedCase)
+      this.$snotify.success('Case saved')
+      this.closeCase()
     }
+
   },
   mounted() {
     this.$store.dispatch('tracks/fetch', this.currentCase.uid)
@@ -182,6 +253,9 @@ export default {
   watch: {
     dialog(val) {
       val || this.close()
+    },
+    dialog1(val) {
+      val || this.closeCase()
     }
   }
 }

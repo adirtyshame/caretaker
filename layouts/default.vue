@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       v-model="drawer"
       :clipped="clipped"
@@ -53,6 +53,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <v-switch :label="`Dark Theme`" v-model="goDark" @change="setTheme" color="primary"></v-switch>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -76,6 +77,7 @@
 export default {
   data () {
     return {
+      goDark: true,
       clipped: false,
       drawer: true,
       fixed: true,
@@ -98,7 +100,14 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch(('user/logout'));
-    }
+    },
+    setTheme() {
+            if (this.goDark == true) {
+                return (this.$vuetify.theme.dark = true);
+            } else {
+                return (this.$vuetify.theme.dark = false);
+            }
+        }
   },
   mounted() {
     this.$store.dispatch('cases/fetch')
