@@ -169,9 +169,6 @@ export default {
       this.close()
     }
   },
-  mounted() {
-    this.$store.dispatch('cases/fetch')
-  },
   watch: {
     dialog(val) {
       val || this.close()

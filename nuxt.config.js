@@ -25,12 +25,14 @@ export default {
   ** Global CSS
   */
   css: [
+    '~/static/prevent-refresh.css'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/snotify.js'
+    '~/plugins/snotify.js',
+    '~/plugins/nuxt-offline-alert.js'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -65,7 +67,7 @@ export default {
           realtimeDb: true,
           firestore: {
             static: false, // default
-            preload: false, // default
+            preload: true, // default
             chunkName: process.env.NODE_ENV !== 'production' ? 'firebase-auth' : '[id]', // default
             enablePersistence: true
           }

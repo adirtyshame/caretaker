@@ -15,8 +15,10 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "firebase": "^7.6.1",
     "nuxt": "^2.0.0",
     "nuxt-fire": "^3.5.3",
+    "nuxt-offline-alert": "0.0.7",
     "vue-snotify": "^3.2.1"
   },
   "devDependencies": {

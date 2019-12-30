@@ -66,6 +66,9 @@
       <span>&copy; 2019</span>
     </v-footer>
     <vue-snotify></vue-snotify>
+    <client-only>
+      <offline-alert/>
+    </client-only>
   </v-app>
 </template>
 
@@ -96,6 +99,9 @@ export default {
     logout() {
       this.$store.dispatch(('user/logout'));
     }
+  },
+  mounted() {
+    this.$store.dispatch('cases/fetch')
   },
 }
 </script>

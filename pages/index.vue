@@ -9,10 +9,7 @@
       sm8
       md6
     >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
+      <nuxt-link to="/cases">Go to cases</nuxt-link>
       
     </v-flex>
   </v-layout>
@@ -20,10 +17,12 @@
 
 <script>
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
-    VuetifyLogo
+    VuetifyLogo,
+    Logo
   }
 }
 </script>
