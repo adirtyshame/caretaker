@@ -34,6 +34,10 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
+        <v-list-item>
+          <v-switch :label="`Dark Theme`" v-model="goDark" @change="setTheme" color="primary"></v-switch>
+        </v-list-item>
+        <v-divider></v-divider>
         <v-list-item
             @click="logout">
           <v-list-item-action>
@@ -53,7 +57,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-switch :label="`Dark Theme`" v-model="goDark" @change="setTheme" color="primary"></v-switch>
+      
     </v-app-bar>
     <v-content>
       <v-container>
