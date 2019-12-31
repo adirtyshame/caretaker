@@ -62,7 +62,7 @@
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" aria-label="Navigation"/>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       
