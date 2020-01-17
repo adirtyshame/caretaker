@@ -1,66 +1,30 @@
 <template>
-  <v-card>
-    <v-card-title>
+<div>
+  <v-toolbar>
+    <v-toolbar-title>
       <v-btn @click="$router.back()" icon>
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
-      {{ currentCase.lastName }}, {{ currentCase.firstName }}&nbsp;
-      <v-btn @click="editCase" icon><v-icon>mdi-pencil-outline</v-icon></v-btn>
-      <v-dialog v-model="dialog1" max-width="500px">
-              <!-- <template v-slot:activator="{ on }">
-                <v-btn class="mb-2" v-on="on" icon><v-icon>mdi-account-edit-outline</v-icon></v-btn>
-              </template> -->
-              <v-card>
-                <v-card-title>
-                  <span class="headline">Pflegefall bearbeiten</span>
-                </v-card-title>
-
-                <v-card-text>
-                  <v-container>
-                    <v-col>
-                      <v-row cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedCase.lastName" label="Nachname"></v-text-field>
-                      </v-row>
-                      <v-row cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedCase.firstName" label="Vorname"></v-text-field>
-                      </v-row>
-                      <v-row cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedCase.address1" label="Straße Hausnummer"></v-text-field>
-                      </v-row>
-                      <v-row cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedCase.address2" label="Postleitzahl Ort"></v-text-field>
-                      </v-row>
-                    </v-col>
-                  </v-container>
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeCase">Abbrechen</v-btn>
-                  <v-btn color="blue darken-1" text @click="saveCase">Speichern</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Suche"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
+      {{ currentCase.lastName }}, {{ currentCase.firstName }}
+    </v-toolbar-title>
+  </v-toolbar>
+  
+  <CaseInfo :currentCase="currentCase"></CaseInfo>
+  <v-card>
     <v-card-text>
-      <p>Straße Hausnummer: {{ currentCase.address1 }}</p>
-      <p>PLZ Ort: {{ currentCase.address2 }}</p>
-      <p>Gesamtstrecke: {{ totalDistance }}km</p>
-      <p>Zeitaufwand: {{ totalEffort }}h</p>
       <v-data-table :headers="headers" :items="tracks" :search="search">
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>Anfahrten</v-toolbar-title>
             <!-- <v-divider class="mx-4" inset vertical></v-divider> -->
             <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Suche"
+              single-line
+              hide-details
+            ></v-text-field>&nbsp;
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
                 <v-btn color="primary" dark class="mb-2" v-on="on">Neue Anfahrt</v-btn>
@@ -113,16 +77,30 @@
       </v-data-table>
     </v-card-text>
   </v-card>
+</div>
 </template>
 
 <script>
 import uuid from 'uuid/v4'
+import CaseInfo from '~/components/CaseInfo'
 export default {
+  components: {
+    CaseInfo
+  },
   data() {
     return {
+      levelsOfCare: [
+        { value: 0, text: 'kein Pflegegrad' },
+        { value: 1, text: 'Pflegegrad 1' },
+        { value: 2, text: 'Pflegegrad 2' },
+        { value: 3, text: 'Pflegegrad 3' },
+        { value: 4, text: 'Pflegegrad 4' },
+        { value: 5, text: 'Pflegegrad 5' },
+      ],
       search: '',
       dialog: false,
       dialog1: false,
+      menu2: false,
       editedIndex: -1,
       editedItem: {
         description: '',
@@ -141,16 +119,26 @@ export default {
       editedCase: {
         lastName: '',
         firstName: '',
+        birthday: '',
+        address1: '',
         address2: '',
-        address2: '',
-        uid: '',
+        insurance: '',
+        levelOfCare: '',
+        iban: '',
+        relatives: '',
+        uid: undefined
       },
       defaultCase: {
         lastName: '',
         firstName: '',
+        birthday: '',
+        address1: '',
         address2: '',
-        address2: '',
-        uid: '',
+        insurance: '',
+        levelOfCare: '',
+        iban: '',
+        relatives: '',
+        uid: undefined
       },
       headers: [
         { text: 'Beschreibung', value: 'description' },
@@ -177,6 +165,11 @@ export default {
     },
     formTitle() {
       return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag bearbeiten'
+    },
+    computedDateFormattedDatefns() {
+      return this.editedCase.birthday
+        ? this.$dateFns.format(this.editedCase.birthday)
+        : ''
     }
   },
   methods: {
@@ -248,7 +241,7 @@ export default {
 
   },
   mounted() {
-    this.$store.dispatch('tracks/fetch', this.currentCase.uid)
+    this.$store.dispatch('tracks/fetch', this.$route.params.caseId)
   },
   watch: {
     dialog(val) {

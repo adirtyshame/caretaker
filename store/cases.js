@@ -6,7 +6,10 @@ export const state = () => ({
 })
 
 export const getters = {
-  getCases: state => state.cases,
+  getCases: state => {
+    const items = [...state.cases].sort((a, b) => a.lastName.localeCompare(b.lastName))
+    return items
+  },
   isFetching: state => state.isFetching
 }
 

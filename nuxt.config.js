@@ -40,6 +40,11 @@ export default {
   */
   buildModules: [
     '@nuxtjs/vuetify',
+    ['@nuxtjs/date-fns', {
+      locales: ['de'],
+      defaultLocale: 'de',
+      format: 'dd. MMMM yyyy',
+    }]
   ],
   /*
   ** Nuxt.js modules

@@ -10,14 +10,17 @@
         single-line
         hide-details
       ></v-text-field>
+
     </v-card-title>
     <v-card-text>
+
       <v-list>
-        <v-list-item
-          v-for="item of filteredCases"
-          :key="item.uid"
-          :to="`/cases/${item.uid}`"
-        >{{ item.lastName }}, {{ item.firstName }} <v-subheader>{{ item.address1 }} {{ item.address2 }}</v-subheader><v-spacer /><v-icon>mdi-chevron-right</v-icon></v-list-item>
+        <v-list-item v-for="item of filteredCases" :key="item.uid" :to="`/cases/${item.uid}`">
+          {{ item.lastName }}, {{ item.firstName }}
+          <v-subheader>{{ item.address1 }} {{ item.address2 }}</v-subheader>
+          <v-spacer />
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-list-item>
       </v-list>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
@@ -32,20 +35,55 @@
 
           <v-card-text>
             <v-container>
-              <v-col>
-                <v-row cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.lastName" label="Last Name"></v-text-field>
-                </v-row>
-                <v-row cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.firstName" label="First Name"></v-text-field>
-                </v-row>
-                <v-row cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.address1" label="Address 1"></v-text-field>
-                </v-row>
-                <v-row cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.address2" label="Address 2"></v-text-field>
-                </v-row>
-              </v-col>
+              <v-row>
+                <v-col>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.lastName" label="Nachname"></v-text-field>
+                  </v-row>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.firstName" label="Vorname"></v-text-field>
+                  </v-row>
+                  <v-row>
+                    <v-menu v-model="menu2" :close-on-content-click="false" max-width="290">
+                      <template v-slot:activator="{ on }">
+                        <v-text-field
+                          :value="computedDateFormattedDatefns"
+                          clearable
+                          label="Geburtstag"
+                          prepend-icon="mdi-calendar-edit"
+                          readonly
+                          v-on="on"
+                          @click:clear="editedItem.birthday = null"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="editedItem.birthday"
+                        locale="de-DE"
+                        header-color="pink"
+                        @change="menu2 = false"
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-row>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.address1" label="Straße Hausnummer"></v-text-field>
+                  </v-row>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.address2" label="Postleitzahl Ort"></v-text-field>
+                  </v-row>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.insurance" label="Versicherung"></v-text-field>
+                  </v-row>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.levelOfCare" label="Pflegestufe"></v-text-field>
+                  </v-row>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.iban" label="IBAN"></v-text-field>
+                  </v-row>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.relatives" label="Angehörige (Tel.)"></v-text-field>
+                  </v-row>
+                </v-col>
+              </v-row>
             </v-container>
           </v-card-text>
 
@@ -70,28 +108,32 @@ export default {
       search: '',
       filteredCases: [],
       dialog: false,
+      menu2: false,
       editedIndex: -1,
       editedItem: {
         lastName: '',
         firstName: '',
+        birthday: '',
         address1: '',
         address2: '',
+        insurance: '',
+        levelOfCare: '',
+        iban: '',
+        relatives: '',
         uid: undefined
       },
       defaultItem: {
         lastName: '',
         firstName: '',
+        birthday: '',
         address1: '',
         address2: '',
+        insurance: '',
+        levelOfCare: '',
+        iban: '',
+        relatives: '',
         uid: undefined
-      },
-      headers: [
-        { text: 'Nachname', value: 'lastName' },
-        { text: 'Vorname', value: 'firstName', align: 'center' },
-        { text: 'Straße Hausnummer', value: 'address1', align: 'center' },
-        { text: 'Postleitzahl Ort', value: 'address2', align: 'center' },
-        { text: 'Aktionen', value: 'action', align: 'center', sortable: false }
-      ]
+      }
     }
   },
   computed: {
@@ -100,6 +142,11 @@ export default {
     },
     formTitle() {
       return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag bearbeiten'
+    },
+    computedDateFormattedDatefns() {
+      return this.editedItem.birthday
+        ? this.$dateFns.format(this.editedItem.birthday)
+        : ''
     }
   },
   methods: {
@@ -145,15 +192,19 @@ export default {
     }
   },
   mounted() {
-    this.filteredCases = this.cases;
+    this.filteredCases = this.cases
   },
   watch: {
     dialog(val) {
       val || this.close()
     },
     search(val) {
-      this.filteredCases = this.cases.filter(c => [c.lastName, c.firstName, c.address1, c.address2].join(' ').includes(val))
-    },
+      this.filteredCases = this.cases.filter(c =>
+        [c.lastName, c.firstName, c.address1, c.address2]
+          .join(' ')
+          .includes(val)
+      )
+    }
   }
 }
 </script>
