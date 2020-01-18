@@ -202,7 +202,6 @@ export default {
 
     async saveCase() {
       const res = await this.$store.dispatch('cases/add', this.editedCase)
-      this.$snotify.success('Case added')
       this.closeCase()
       this.$router.push(`/cases/${res.id}`)
     },

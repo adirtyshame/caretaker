@@ -254,13 +254,11 @@ export default {
           track
         })
       }
-      this.$snotify.success('Track saved')
       this.close()
     },
 
     saveCase() {
       this.$store.dispatch('cases/save', this.editedCase)
-      this.$snotify.success('Case saved')
       this.closeCase()
     },
 

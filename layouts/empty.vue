@@ -5,6 +5,5 @@
         <nuxt />
       </v-container>
     </v-content>
-    <vue-snotify></vue-snotify>
   </v-app>
 </template>

@@ -53,9 +53,8 @@ export default {
             email: this.email,
             password: this.password,
         })
-        .catch(e => this.$snotify.error(e.message))
+        .catch(e => console.error(e.message))
         .then(() => this.$router.push('/'))
-        .then(() => this.$snotify.success('Logged in'))
     }
   }
 }

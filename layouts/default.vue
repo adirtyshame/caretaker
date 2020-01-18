@@ -78,7 +78,6 @@
     >
       <span>&copy; 2020</span>
     </v-footer>
-    <vue-snotify></vue-snotify>
     <client-only>
       <offline-alert onlineMessage="Sie sind wieder online!" offlineMessage="Sie sind offline!"/>
     </client-only>

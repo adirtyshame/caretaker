@@ -195,7 +195,6 @@ Pflegegrad 5:
 
     saveCase() {
       this.$store.dispatch('cases/save', this.editedCase)
-      this.$snotify.success('Case saved')
       this.closeCase()
     },
 

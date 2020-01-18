@@ -51,9 +51,8 @@ export default {
     googleSignIn() {
       this.$store
         .dispatch('user/googleSignIn')
-        .catch(e => this.$snotify.error(e.message))
-        .then(() => this.$router.push('/'))
-        .then(() => this.$snotify.success('Logged in'))
+        .catch(e => console.error(e.message))
+        .then(() => this.$router.push('/cases'))
     },
     passwordSignIn() {
       this.$store
@@ -61,9 +60,8 @@ export default {
           email: this.email,
           password: this.password,
         })
-        .catch(e => this.$snotify.error(e.message))
-        .then(() => this.$router.push('/'))
-        .then(() => this.$snotify.success('Logged in'))
+        .catch(e => console.error(e.message))
+        .then(() => this.$router.push('/cases'))
     },
   }
 }
