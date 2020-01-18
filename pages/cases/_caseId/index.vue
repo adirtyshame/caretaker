@@ -11,12 +11,9 @@
   
   <CaseInfo :currentCase="currentCase" class="mt-2"></CaseInfo>
   <v-card>
-    <v-card-text>
-      <v-data-table :headers="headers" :items="tracks" :search="search" sort-by="timestamp">
-        <template v-slot:top>
-          <v-toolbar flat>
-            <v-toolbar-title>Anfahrten</v-toolbar-title>
-            <v-spacer></v-spacer>
+    <v-card-title>
+      Anfahrten
+      <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
                 <v-btn color="primary" dark class="mb-2" v-on="on">Neue Anfahrt</v-btn>
@@ -70,14 +67,17 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-toolbar>
+    </v-card-title>
+    <v-card-text>
+
           <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
               label="Suche"
               hide-details
             ></v-text-field>
-        </template>
+            
+      <v-data-table :headers="headers" :items="tracks" :search="search" sort-by="timestamp">
         <template slot="items" slot-scope="props">
           <tr @click="editItem(props.item)">
           <td>{{ props.item.name }}</td>

@@ -102,12 +102,12 @@ export default {
       fixed: true,
       items: [
         {
-          icon: 'mdi-apps',
+          icon: 'mdi-home',
           title: 'Startseite',
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-account-multiple',
           title: 'Pflegefälle',
           to: '/cases'
         }
