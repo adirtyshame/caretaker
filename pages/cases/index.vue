@@ -16,22 +16,28 @@
 
       <v-list>
         <v-list-item
+        three-line
           v-for="item of filteredCases"
           :key="item.uid"
           :to="`/cases/${item.uid}`">
-          {{ item.lastName }}, {{ item.firstName }}
-
-          <v-subheader>{{ item.caseRef }}</v-subheader>
-          <v-subheader>{{ item.address1 }} {{ item.address2 }}</v-subheader>
-          <v-spacer />
-
+          <v-list-item-avatar>
             <v-avatar
             v-if="item"
             :color="severity(item.levelOfCare)"
             size="24">
           </v-avatar>
+          </v-list-item-avatar>
+          <v-list-item-title>
+          <div>{{ item.lastName }}, {{ item.firstName }}</div>
+          <div>{{ item.caseRef ? item.caseRef : '---' }}</div>
+          <div>{{ item.address1 }} {{ item.address2 }}</div>
+          </v-list-item-title>
+          <v-spacer />
+
+          
           <v-icon>mdi-chevron-right</v-icon>
         </v-list-item>
+        
       </v-list>
       <v-dialog v-model="dialog">
           <template v-slot:activator="{ on }">

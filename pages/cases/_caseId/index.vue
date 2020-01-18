@@ -17,7 +17,7 @@
   <CaseInfo :currentCase="currentCase"></CaseInfo>
   <v-card>
     <v-card-text>
-      <v-data-table :headers="headers" :items="tracks" :search="search">
+      <v-data-table :headers="headers" :items="tracks" :search="search" sort-by="timestamp">
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>Anfahrten</v-toolbar-title>
@@ -51,6 +51,27 @@
                       <v-row cols="12" sm="6" md="4">
                         <v-text-field v-model="editedItem.distance" label="Strecke (km)"></v-text-field>
                       </v-row>
+                      <v-row>
+                        <v-menu v-model="dateMenu" :close-on-content-click="false" max-width="290">
+                      <template v-slot:activator="{ on }">
+                        <v-text-field
+                          :value="computedDateFormattedDatefns"
+                          clearable
+                          label="Datum"
+                          prepend-icon="mdi-calendar-edit"
+                          readonly
+                          v-on="on"
+                          @click:clear="editedItem.timestamp = null"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="editedItem.timestamp"
+                        locale="de-DE"
+                        header-color="pink"
+                        @change="dateMenu = false"
+                      ></v-date-picker>
+                    </v-menu>
+                      </v-row>
                     </v-col>
                   </v-container>
                 </v-card-text>
@@ -70,8 +91,12 @@
           <td class="text-xs-right">{{ props.item.description }}</td>
           <td class="text-xs-right">{{ props.item.effort }}</td>
           <td class="text-xs-right">{{ props.item.distance }}</td>
+          <td class="text-xs-right">bla {{ props.item.timestamp ? $dateFns.format(props.item.timestamp) : '' }}</td>
             </tr>
         </template>
+        <template v-slot:item.timestamp="{ item }">
+           <span>{{ item.timestamp ? $dateFns.format(item.timestamp) : '' }}</span>
+         </template>
         <template v-slot:item.action="{ item }">
           <v-icon class="mr-2" @click="editItem(item)">mdi-pencil-outline</v-icon>
           <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
@@ -94,6 +119,7 @@ export default {
   },
   data() {
     return {
+      dateMenu: false,
       levelsOfCare: [
         { value: 0, text: 'kein Pflegegrad', color: 'nothing' },
         { value: 1, text: 'Pflegegrad 1', color: 'yellow' },
@@ -149,6 +175,7 @@ export default {
         { text: 'Beschreibung', value: 'description' },
         { text: 'Aufwand (h)', value: 'effort', align: 'center' },
         { text: 'Strecke (km)', value: 'distance', align: 'center' },
+        { text: 'Datum', value: 'timestamp', align: 'center'},
         { text: 'Aktionen', value: 'action', align: 'center', sortable: false }
       ]
     }
@@ -172,8 +199,8 @@ export default {
       return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag bearbeiten'
     },
     computedDateFormattedDatefns() {
-      return this.editedCase.birthday
-        ? this.$dateFns.format(this.editedCase.birthday)
+      return this.editedItem.timestamp
+        ? this.$dateFns.format(this.editedItem.timestamp)
         : ''
     }
   },
