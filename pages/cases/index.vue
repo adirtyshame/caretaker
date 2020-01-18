@@ -220,9 +220,9 @@ export default {
     },
     search(val) {
       this.filteredCases = this.cases.filter(c =>
-        [c.lastName, c.firstName, c.address1, c.address2]
+        [c.lastName.toUpperCase(), c.firstName.toUpperCase(), c.address1.toUpperCase(), c.address2.toUpperCase(), (c.caseRef || '').toUpperCase()]
           .join(' ')
-          .includes(val)
+          .includes(val.toUpperCase())
       )
     }
   }
