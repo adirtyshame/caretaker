@@ -6,15 +6,10 @@
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
      {{ currentCase.lastName }}, {{ currentCase.firstName }}
-      <v-avatar
-        v-if="currentCase"
-        :color="severity(currentCase.levelOfCare)"
-        size="24">
-      </v-avatar>
     </v-toolbar-title>
   </v-toolbar>
   
-  <CaseInfo :currentCase="currentCase"></CaseInfo>
+  <CaseInfo :currentCase="currentCase" class="mt-2"></CaseInfo>
   <v-card>
     <v-card-text>
       <v-data-table :headers="headers" :items="tracks" :search="search" sort-by="timestamp">
@@ -121,7 +116,7 @@ export default {
     return {
       dateMenu: false,
       levelsOfCare: [
-        { value: 0, text: 'kein Pflegegrad', color: 'nothing' },
+        { value: 0, text: 'kein Pflegegrad', color: 'lime' },
         { value: 1, text: 'Pflegegrad 1', color: 'yellow' },
         { value: 2, text: 'Pflegegrad 2', color: 'amber' },
         { value: 3, text: 'Pflegegrad 3', color: 'orange' },

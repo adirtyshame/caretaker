@@ -27,15 +27,14 @@
 
           
           </v-list-item-content>
-          <v-list-item-actions>
 
           <v-avatar
             v-if="item"
             :color="severity(item.levelOfCare)"
-            size="24">
+            size="36">
+            {{ item.levelOfCare || 0}}
           </v-avatar>
           <v-icon>mdi-chevron-right</v-icon>
-          </v-list-item-actions>
         </v-list-item>
         
       </v-list>
@@ -127,7 +126,7 @@ export default {
       menu2: false,
       birthdayMenu: false,
       levelsOfCare: [
-        { value: 0, text: 'kein Pflegegrad', color: 'nothing' },
+        { value: 0, text: 'kein Pflegegrad', color: 'lime' },
         { value: 1, text: 'Pflegegrad 1', color: 'yellow' },
         { value: 2, text: 'Pflegegrad 2', color: 'amber' },
         { value: 3, text: 'Pflegegrad 3', color: 'orange' },

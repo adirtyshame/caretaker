@@ -85,8 +85,8 @@
         </v-dialog>
       </v-card-title>
       <v-card-text>
-        <b>Geburtstag:</b> {{ currentCase.birthday ? $dateFns.format(currentCase.birthday) : '' }}<br/>
-        <b>Pflegegrad:</b> {{ currentCase.levelOfCare ? currentCase.levelOfCare : '---' }}<br/>
+        <b>Geburtstag:</b> {{ currentCase.birthday ? $dateFns.format(currentCase.birthday) : '---' }}<br/>
+        <b>Pflegegrad:</b> <v-chip :color="severity(currentCase.levelOfCare)">{{currentCase.levelOfCare || 0}}</v-chip>
         <v-row>
           <v-col>
             <b>Adresse:</b>
@@ -100,7 +100,6 @@
           <v-col>
             <b>Versicherung:</b>
             <div>{{ currentCase.insurance ? currentCase.insurance : '---' }}</div>
-            <div>{{ currentCase.levelOfCare ? currentCase.levelOfCare : '---' }}</div>
             <br/>
             <b>Angehörige:</b>
             <div>{{ currentCase.relatives ? currentCase.relatives : '---' }}</div>
