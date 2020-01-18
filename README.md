@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/adirtyshame/caretaker.svg?branch=master)](https://travis-ci.org/adirtyshame/caretaker)
+
 # caretaker
 
 > My great Nuxt.js project
