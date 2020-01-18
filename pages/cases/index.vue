@@ -20,13 +20,6 @@
           v-for="item of filteredCases"
           :key="item.uid"
           :to="`/cases/${item.uid}`">
-          <v-list-item-avatar>
-            <v-avatar
-            v-if="item"
-            :color="severity(item.levelOfCare)"
-            size="24">
-          </v-avatar>
-          </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{ item.lastName }}, {{ item.firstName }}</v-list-item-title>
           <v-list-item-subtitle>{{ item.caseRef ? item.caseRef : '---' }}</v-list-item-subtitle>
@@ -36,6 +29,11 @@
           </v-list-item-content>
           <v-list-item-actions>
 
+          <v-avatar
+            v-if="item"
+            :color="severity(item.levelOfCare)"
+            size="24">
+          </v-avatar>
           <v-icon>mdi-chevron-right</v-icon>
           </v-list-item-actions>
         </v-list-item>
