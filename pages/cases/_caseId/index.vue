@@ -5,7 +5,12 @@
       <v-btn @click="$router.back()" icon>
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
-      {{ currentCase.lastName }}, {{ currentCase.firstName }}
+     {{ currentCase.lastName }}, {{ currentCase.firstName }}
+      <v-avatar
+        v-if="currentCase"
+        :color="severity(currentCase.levelOfCare)"
+        size="24">
+      </v-avatar>
     </v-toolbar-title>
   </v-toolbar>
   
@@ -90,12 +95,12 @@ export default {
   data() {
     return {
       levelsOfCare: [
-        { value: 0, text: 'kein Pflegegrad' },
-        { value: 1, text: 'Pflegegrad 1' },
-        { value: 2, text: 'Pflegegrad 2' },
-        { value: 3, text: 'Pflegegrad 3' },
-        { value: 4, text: 'Pflegegrad 4' },
-        { value: 5, text: 'Pflegegrad 5' },
+        { value: 0, text: 'kein Pflegegrad', color: 'nothing' },
+        { value: 1, text: 'Pflegegrad 1', color: 'yellow' },
+        { value: 2, text: 'Pflegegrad 2', color: 'amber' },
+        { value: 3, text: 'Pflegegrad 3', color: 'orange' },
+        { value: 4, text: 'Pflegegrad 4', color: 'red' },
+        { value: 5, text: 'Pflegegrad 5', color: 'purple' },
       ],
       search: '',
       dialog: false,
@@ -237,6 +242,10 @@ export default {
       this.$store.dispatch('cases/save', this.editedCase)
       this.$snotify.success('Case saved')
       this.closeCase()
+    },
+
+    severity(val) {
+      return this.levelsOfCare[val || 0].color
     }
 
   },

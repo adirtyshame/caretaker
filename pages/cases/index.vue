@@ -15,10 +15,21 @@
     <v-card-text>
 
       <v-list>
-        <v-list-item v-for="item of filteredCases" :key="item.uid" :to="`/cases/${item.uid}`">
+        <v-list-item
+          v-for="item of filteredCases"
+          :key="item.uid"
+          :to="`/cases/${item.uid}`">
           {{ item.lastName }}, {{ item.firstName }}
+
+          <v-subheader>{{ item.caseRef }}</v-subheader>
           <v-subheader>{{ item.address1 }} {{ item.address2 }}</v-subheader>
           <v-spacer />
+
+            <v-avatar
+            v-if="item"
+            :color="severity(item.levelOfCare)"
+            size="24">
+          </v-avatar>
           <v-icon>mdi-chevron-right</v-icon>
         </v-list-item>
       </v-list>
@@ -110,12 +121,12 @@ export default {
       menu2: false,
       birthdayMenu: false,
       levelsOfCare: [
-        { value: 0, text: 'kein Pflegegrad' },
-        { value: 1, text: 'Pflegegrad 1' },
-        { value: 2, text: 'Pflegegrad 2' },
-        { value: 3, text: 'Pflegegrad 3' },
-        { value: 4, text: 'Pflegegrad 4' },
-        { value: 5, text: 'Pflegegrad 5' },
+        { value: 0, text: 'kein Pflegegrad', color: 'nothing' },
+        { value: 1, text: 'Pflegegrad 1', color: 'yellow' },
+        { value: 2, text: 'Pflegegrad 2', color: 'amber' },
+        { value: 3, text: 'Pflegegrad 3', color: 'orange' },
+        { value: 4, text: 'Pflegegrad 4', color: 'red' },
+        { value: 5, text: 'Pflegegrad 5', color: 'purple' },
       ],
       editedIndex: -1,
       editedCase: {
@@ -189,6 +200,10 @@ export default {
       this.$snotify.success('Case added')
       this.closeCase()
       this.$router.push(`/cases/${res.id}`)
+    },
+
+    severity(val) {
+      return this.levelsOfCare[val || 0].color
     }
   },
   mounted() {

@@ -1,7 +1,8 @@
 <template>
     <v-card v-if="currentCase" class="mb-2">
       <v-card-title>
-        <v-subheader>{{ currentCase.birthday ? $dateFns.format(currentCase.birthday) : '' }}</v-subheader>
+        Aktenzeichen: {{ currentCase.caseRef ? currentCase.caseRef : '---' }}
+        <v-spacer></v-spacer>   
         <v-btn @click="editCase" icon>
           <v-icon>mdi-pencil-outline</v-icon>
         </v-btn>
@@ -22,6 +23,7 @@
                   <v-col>
                     <v-text-field v-model="editedCase.lastName" label="Nachname"></v-text-field>
                     <v-text-field v-model="editedCase.firstName" label="Vorname"></v-text-field>
+                    <v-text-field v-model="editedCase.caseRef" label="Aktenzeichen"></v-text-field>
                     <v-menu v-model="birthdayMenu" :close-on-content-click="false" max-width="290">
                       <template v-slot:activator="{ on }">
                         <v-text-field
@@ -76,9 +78,10 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-spacer></v-spacer>
       </v-card-title>
       <v-card-text>
+        <b>Geburtstag:</b> {{ currentCase.birthday ? $dateFns.format(currentCase.birthday) : '' }}<br/>
+        <b>Pflegegrad:</b> {{ currentCase.levelOfCare ? currentCase.levelOfCare : '---' }}<br/>
         <v-row>
           <v-col>
             <b>Adresse:</b>
@@ -110,12 +113,12 @@ export default {
       dialog: false,
       birthdayMenu: false,
       levelsOfCare: [
-        { value: 0, text: 'kein Pflegegrad' },
-        { value: 1, text: 'Pflegegrad 1' },
-        { value: 2, text: 'Pflegegrad 2' },
-        { value: 3, text: 'Pflegegrad 3' },
-        { value: 4, text: 'Pflegegrad 4' },
-        { value: 5, text: 'Pflegegrad 5' },
+        { value: 0, text: 'kein Pflegegrad', color: 'lime' },
+        { value: 1, text: 'Pflegegrad 1', color: 'yellow' },
+        { value: 2, text: 'Pflegegrad 2', color: 'amber' },
+        { value: 3, text: 'Pflegegrad 3', color: 'orange' },
+        { value: 4, text: 'Pflegegrad 4', color: 'red' },
+        { value: 5, text: 'Pflegegrad 5', color: 'purple' },
       ],
       editedCase: {
         lastName: '',
@@ -125,6 +128,7 @@ export default {
         address2: '',
         insurance: '',
         levelOfCare: '',
+        caseRef: '',
         iban: '',
         bic: '',
         relatives: '',
@@ -138,6 +142,7 @@ export default {
         address2: '',
         insurance: '',
         levelOfCare: '',
+        caseRef: '',
         iban: '',
         bic: '',
         relatives: '',
@@ -189,6 +194,10 @@ export default {
       this.$store.dispatch('cases/save', this.editedCase)
       this.$snotify.success('Case saved')
       this.closeCase()
+    },
+
+    severity(val) {
+      return this.levelsOfCare[val || 0].color
     }
   }
 }

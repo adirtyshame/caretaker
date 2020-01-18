@@ -33,7 +33,7 @@ export default {
   plugins: [
     '~/plugins/auth.js',
     '~/plugins/snotify.js',
-    '~/plugins/nuxt-offline-alert.js'
+    '~/plugins/nuxt-offline-alert.js',
   ],
   /*
   ** Nuxt.js dev-modules
