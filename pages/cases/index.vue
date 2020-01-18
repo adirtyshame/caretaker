@@ -27,20 +27,22 @@
             size="24">
           </v-avatar>
           </v-list-item-avatar>
-          <v-list-item-title>
-          <div>{{ item.lastName }}, {{ item.firstName }}</div>
-          <div>{{ item.caseRef ? item.caseRef : '---' }}</div>
-          <div>{{ item.address1 }} {{ item.address2 }}</div>
-          </v-list-item-title>
-          <v-spacer />
+          <v-list-item-content>
+            <v-list-item-title>{{ item.lastName }}, {{ item.firstName }}</v-list-item-title>
+          <v-list-item-subtitle>{{ item.caseRef ? item.caseRef : '---' }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ item.address1 }} {{ item.address2 }}</v-list-item-subtitle>
 
           
+          </v-list-item-content>
+          <v-list-item-actions>
+
           <v-icon>mdi-chevron-right</v-icon>
+          </v-list-item-actions>
         </v-list-item>
         
       </v-list>
       <v-dialog v-model="dialog">
-          <template v-slot:activator="{ on }">
+        <template v-slot:activator="{ on }">
           <v-btn color="pink" dark absolute bottom right fab v-on="on">
             <v-icon>mdi-plus</v-icon>
           </v-btn>

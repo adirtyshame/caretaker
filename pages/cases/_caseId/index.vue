@@ -91,11 +91,11 @@
           <td class="text-xs-right">{{ props.item.description }}</td>
           <td class="text-xs-right">{{ props.item.effort }}</td>
           <td class="text-xs-right">{{ props.item.distance }}</td>
-          <td class="text-xs-right">bla {{ props.item.timestamp ? $dateFns.format(props.item.timestamp) : '' }}</td>
+          <td class="text-xs-right">will be replaced by template slot</td>
             </tr>
         </template>
         <template v-slot:item.timestamp="{ item }">
-           <span>{{ item.timestamp ? $dateFns.format(item.timestamp) : '' }}</span>
+           <span>{{ item.timestamp ? $dateFns.format(item.timestamp, 'dd.MM.yyyy') : '' }}</span>
          </template>
         <template v-slot:item.action="{ item }">
           <v-icon class="mr-2" @click="editItem(item)">mdi-pencil-outline</v-icon>
