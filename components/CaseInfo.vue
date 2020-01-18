@@ -1,7 +1,7 @@
 <template>
     <v-card v-if="currentCase" class="mb-2">
       <v-card-title>
-        Aktenzeichen: {{ currentCase.caseRef ? currentCase.caseRef : '---' }}
+        {{ currentCase.lastName }}, {{ currentCase.firstName }}
         <v-spacer></v-spacer>   
         <v-btn @click="editCase" icon>
           <v-icon>mdi-pencil-outline</v-icon>
@@ -46,8 +46,6 @@
                     <v-text-field v-model="editedCase.address1" label="Straße Hausnummer"></v-text-field>
                     <v-text-field v-model="editedCase.address2" label="Postleitzahl Ort"></v-text-field>
 
-                  </v-col>
-                  <v-col>
                     <v-text-field v-model="editedCase.insurance" label="Versicherung"></v-text-field>
                     <v-row>
                       <v-select
@@ -85,6 +83,7 @@
         </v-dialog>
       </v-card-title>
       <v-card-text>
+        <b>Aktenzeichen:</b>  {{ currentCase.caseRef ? currentCase.caseRef : '---' }}<br/>
         <b>Geburtstag:</b> {{ currentCase.birthday ? $dateFns.format(currentCase.birthday) : '---' }}<br/>
         <b>Pflegegrad:</b> <v-chip :color="severity(currentCase.levelOfCare)">{{currentCase.levelOfCare || 0}}</v-chip>
         <v-row>

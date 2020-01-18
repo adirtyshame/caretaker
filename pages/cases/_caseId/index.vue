@@ -5,7 +5,7 @@
       <v-btn @click="$router.back()" icon>
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
-     {{ currentCase.lastName }}, {{ currentCase.firstName }}
+     zurück
     </v-toolbar-title>
   </v-toolbar>
   
