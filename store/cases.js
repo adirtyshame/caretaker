@@ -35,16 +35,16 @@ export const mutations = {
 }
 
 export const actions = {
-  add(context, track) {
+  async add(context, track) {
     delete track.uid
-    this.$fireStore
+    return await this.$fireStore
         .collection('users')
         .doc(context.rootState.user.user.uid)
         .collection('cases')
         .add(track)
   },
-  remove(context, track) {
-    this.$fireStore
+  async remove(context, track) {
+    return await this.$fireStore
         .collection('users')
         .doc(context.rootState.user.user.uid)
         .collection('cases')

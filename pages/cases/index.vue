@@ -22,29 +22,24 @@
           <v-icon>mdi-chevron-right</v-icon>
         </v-list-item>
       </v-list>
-      <v-dialog v-model="dialog" max-width="500px">
-        <template v-slot:activator="{ on }">
+      <v-dialog v-model="dialog">
+          <template v-slot:activator="{ on }">
           <v-btn color="pink" dark absolute bottom right fab v-on="on">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </template>
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
+          <v-card>
+            <v-card-title>
+              <span class="headline">Pflegefall bearbeiten</span>
+            </v-card-title>
 
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.lastName" label="Nachname"></v-text-field>
-                  </v-row>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.firstName" label="Vorname"></v-text-field>
-                  </v-row>
-                  <v-row>
-                    <v-menu v-model="menu2" :close-on-content-click="false" max-width="290">
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <v-text-field v-model="editedCase.lastName" label="Nachname"></v-text-field>
+                    <v-text-field v-model="editedCase.firstName" label="Vorname"></v-text-field>
+                    <v-menu v-model="birthdayMenu" :close-on-content-click="false" max-width="290">
                       <template v-slot:activator="{ on }">
                         <v-text-field
                           :value="computedDateFormattedDatefns"
@@ -53,47 +48,51 @@
                           prepend-icon="mdi-calendar-edit"
                           readonly
                           v-on="on"
-                          @click:clear="editedItem.birthday = null"
+                          @click:clear="editedCase.birthday = null"
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="editedItem.birthday"
+                        v-model="editedCase.birthday"
                         locale="de-DE"
                         header-color="pink"
-                        @change="menu2 = false"
+                        @change="birthdayMenu = false"
                       ></v-date-picker>
                     </v-menu>
-                  </v-row>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.address1" label="Straße Hausnummer"></v-text-field>
-                  </v-row>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.address2" label="Postleitzahl Ort"></v-text-field>
-                  </v-row>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.insurance" label="Versicherung"></v-text-field>
-                  </v-row>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.levelOfCare" label="Pflegestufe"></v-text-field>
-                  </v-row>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.iban" label="IBAN"></v-text-field>
-                  </v-row>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.relatives" label="Angehörige (Tel.)"></v-text-field>
-                  </v-row>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
+                    <v-text-field v-model="editedCase.address1" label="Straße Hausnummer"></v-text-field>
+                    <v-text-field v-model="editedCase.address2" label="Postleitzahl Ort"></v-text-field>
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+                  </v-col>
+                  <v-col>
+                    <v-text-field v-model="editedCase.insurance" label="Versicherung"></v-text-field>
+                    <v-row>
+                      <v-select
+                      v-model="editedCase.levelOfCare"
+                      :items="levelsOfCare"
+                      label="Pflegegrad"
+                    ></v-select>
+                    <v-tooltip right>
+                      <template v-slot:activator="{ on }">
+                        <v-icon color="primary" dark v-on="on">mdi-information-outline</v-icon>
+                      </template>
+                      <pre>{{locDescription}}</pre>
+                    </v-tooltip>
+                    </v-row>
+                    <v-text-field v-model="editedCase.iban" label="IBAN"></v-text-field>
+                    <v-text-field v-model="editedCase.bic" label="BIC"></v-text-field>
+                    <v-text-field v-model="editedCase.relatives" label="Angehörige (Tel.)"></v-text-field>
+
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeCase">Abbrechen</v-btn>
+              <v-btn color="blue darken-1" text @click="saveCase">Speichern</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     </v-card-text>
   </v-card>
 </template>
@@ -109,8 +108,17 @@ export default {
       filteredCases: [],
       dialog: false,
       menu2: false,
+      birthdayMenu: false,
+      levelsOfCare: [
+        { value: 0, text: 'kein Pflegegrad' },
+        { value: 1, text: 'Pflegegrad 1' },
+        { value: 2, text: 'Pflegegrad 2' },
+        { value: 3, text: 'Pflegegrad 3' },
+        { value: 4, text: 'Pflegegrad 4' },
+        { value: 5, text: 'Pflegegrad 5' },
+      ],
       editedIndex: -1,
-      editedItem: {
+      editedCase: {
         lastName: '',
         firstName: '',
         birthday: '',
@@ -122,7 +130,7 @@ export default {
         relatives: '',
         uid: undefined
       },
-      defaultItem: {
+      defaultCase: {
         lastName: '',
         firstName: '',
         birthday: '',
@@ -133,7 +141,24 @@ export default {
         iban: '',
         relatives: '',
         uid: undefined
-      }
+      },
+      locDescription: `
+  Pflegegrad 1:
+      Geringe Beeinträchtigung der Selbstständigkeit
+  Pflegegrad 2:
+      Erhebliche Beeinträchtigung der Selbstständigkeit
+      (ehemals Pflegestufe 1)
+  Pflegegrad 3:
+      Schwere Beeinträchtigung der Selbstständigkeit
+      (ehemals Pflegestufe 2)
+  Pflegegrad 4:
+      Schwerste Beeinträchtigung der Selbstständigkeit
+      (ehemals Pflegestufe 3)
+  Pflegegrad 5:
+      Schwerste Beeinträchtigung der Selbstständigkeit mit
+      besonderen Anforderungen an die pflegerische Versorgung
+      (ehemals Härtefall)
+            `
     }
   },
   computed: {
@@ -144,51 +169,26 @@ export default {
       return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag bearbeiten'
     },
     computedDateFormattedDatefns() {
-      return this.editedItem.birthday
-        ? this.$dateFns.format(this.editedItem.birthday)
+      return this.editedCase.birthday
+        ? this.$dateFns.format(this.editedCase.birthday)
         : ''
     }
   },
   methods: {
-    openItem(item) {
-      this.$router.push(`/cases/${item.uid}`)
-    },
-    editItem(item) {
-      this.editedIndex = this.cases.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
 
-    deleteItem(track) {
-      const index = this.cases.indexOf(track)
-      confirm('Möchten Sie diesen Eintrag wirklich löschen?') &&
-        this.$store.dispatch('cases/remove', track)
-    },
-
-    close() {
+    closeCase() {
       this.dialog = false
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedCase = Object.assign({}, this.defaultCase)
         this.editedIndex = -1
       }, 300)
     },
 
-    save() {
-      const track = {
-        uid: this.editedItem.uid,
-        firstName: this.editedItem.firstName,
-        lastName: this.editedItem.lastName,
-        address1: this.editedItem.address1,
-        address2: this.editedItem.address2
-      }
-
-      if (this.editedIndex > -1) {
-        this.$store.dispatch('cases/save', track)
-      } else {
-        this.$store.dispatch('cases/add', track)
-      }
-      this.$snotify.success('Case saved')
-      this.close()
+    async saveCase() {
+      const res = await this.$store.dispatch('cases/add', this.editedCase)
+      this.$snotify.success('Case added')
+      this.closeCase()
+      this.$router.push(`/cases/${res.id}`)
     }
   },
   mounted() {
@@ -196,7 +196,7 @@ export default {
   },
   watch: {
     dialog(val) {
-      val || this.close()
+      val || this.closeCase()
     },
     search(val) {
       this.filteredCases = this.cases.filter(c =>
