@@ -54,7 +54,12 @@
                       v-model="editedCase.levelOfCare"
                       :items="levelsOfCare"
                       label="Pflegegrad"
-                    ></v-select>
+                    >
+                      <v-avatar
+                        slot="prepend-inner"
+                      :color="severity(editedCase.levelOfCare)"
+                      size="24" />
+                    </v-select>
                     <v-tooltip right>
                       <template v-slot:activator="{ on }">
                         <v-icon color="primary" dark v-on="on">mdi-information-outline</v-icon>
@@ -149,21 +154,21 @@ export default {
         uid: undefined
       },
       locDescription: `
-  Pflegegrad 1:
-      Geringe Beeinträchtigung der Selbstständigkeit
-  Pflegegrad 2:
-      Erhebliche Beeinträchtigung der Selbstständigkeit
-      (ehemals Pflegestufe 1)
-  Pflegegrad 3:
-      Schwere Beeinträchtigung der Selbstständigkeit
-      (ehemals Pflegestufe 2)
-  Pflegegrad 4:
-      Schwerste Beeinträchtigung der Selbstständigkeit
-      (ehemals Pflegestufe 3)
-  Pflegegrad 5:
-      Schwerste Beeinträchtigung der Selbstständigkeit mit
-      besonderen Anforderungen an die pflegerische Versorgung
-      (ehemals Härtefall)
+Pflegegrad 1:
+    Geringe Beeinträchtigung der Selbstständigkeit
+Pflegegrad 2:
+    Erhebliche Beeinträchtigung der Selbstständigkeit
+    (ehemals Pflegestufe 1)
+Pflegegrad 3:
+    Schwere Beeinträchtigung der Selbstständigkeit
+    (ehemals Pflegestufe 2)
+Pflegegrad 4:
+    Schwerste Beeinträchtigung der Selbstständigkeit
+    (ehemals Pflegestufe 3)
+Pflegegrad 5:
+    Schwerste Beeinträchtigung der Selbstständigkeit mit
+    besonderen Anforderungen an die pflegerische Versorgung
+    (ehemals Härtefall)
             `
     }
   },
