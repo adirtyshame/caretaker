@@ -77,13 +77,14 @@
               hide-details
             ></v-text-field>
             
-      <v-data-table :headers="headers" :items="tracks" :search="search" sort-by="timestamp">
+      <v-data-table :headers="headers" :items="filteredTracks" sort-by="timestamp">
         <template slot="items" slot-scope="props">
           <tr @click="editItem(props.item)">
           <td>{{ props.item.name }}</td>
           <td class="text-xs-right">{{ props.item.description }}</td>
           <td class="text-xs-right">{{ props.item.effort }}</td>
           <td class="text-xs-right">{{ props.item.distance }}</td>
+          <td class="text-xs-right">{{ props.item.remuneration }}</td>
           <td class="text-xs-right">will be replaced by template slot</td>
             </tr>
         </template>
@@ -122,6 +123,7 @@ export default {
         { value: 5, text: 'Pflegegrad 5', color: 'purple' },
       ],
       search: '',
+      filteredTracks: [],
       dialog: false,
       dialog1: false,
       menu2: false,
@@ -183,10 +185,10 @@ export default {
       return this.$store.getters['tracks/getTracks']
     },
     totalDistance() {
-      return this.tracks.reduce((sum, curr) => sum + curr.distance, 0)
+      return this.filteredTracks.reduce((sum, curr) => sum + curr.distance, 0)
     },
     totalEffort() {
-      return this.tracks.reduce((sum, curr) => sum + curr.effort, 0)
+      return this.filteredTracks.reduce((sum, curr) => sum + curr.effort, 0)
     },
     formTitle() {
       return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag bearbeiten'
@@ -199,19 +201,19 @@ export default {
   },
   methods: {
     editItem(item) {
-      this.editedIndex = this.tracks.indexOf(item)
+      this.editedIndex = this.tracks.findIndex(e => e.uid === item.uid)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     editCase(item) {
-      this.editedIndex = this.tracks.indexOf(item)
+      this.editedIndex = this.tracks.findIndex(e => e.uid === item.uid)
       this.editedCase = Object.assign({}, this.currentCase)
       this.dialog1 = true
     },
 
     deleteItem(track) {
-      const index = this.tracks.indexOf(track)
+      const index = this.tracks.findIndex(e => e.uid === track.uid)
       confirm('Are you sure you want to delete this item?') &&
         this.$store.dispatch('tracks/remove', {
           caseId: this.$route.params.caseId,
@@ -242,7 +244,6 @@ export default {
         effort: parseFloat(this.editedItem.effort),
         timestamp: this.editedItem.timestamp
       }
-
       if (this.editedIndex > -1) {
         this.$store.dispatch('tracks/save', {
           caseId: this.$route.params.caseId,
@@ -268,6 +269,7 @@ export default {
 
   },
   mounted() {
+    this.filteredTracks = this.tracks
     this.$store.dispatch('tracks/fetch', this.$route.params.caseId)
   },
   watch: {
@@ -276,6 +278,13 @@ export default {
     },
     dialog1(val) {
       val || this.closeCase()
+    },
+    search(val) {
+      this.filteredTracks = this.tracks.filter(c =>
+        [c.description.toUpperCase(), c.timestamp.toUpperCase()]
+          .join(' ')
+          .includes(val.toUpperCase())
+      )
     }
   }
 }
