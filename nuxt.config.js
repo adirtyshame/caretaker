@@ -1,7 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  mode: 'spa',
+  ssr: false,
   /*
   ** Headers of the page
   */
@@ -56,7 +56,7 @@ export default {
     '@nuxtjs/dotenv',
     // Firebase stuff
     [
-      'nuxt-fire',
+      '@nuxtjs/firebase',
       {
         config: {
           apiKey: "AIzaSyApOBDR6QkUmFpWZDqS1EXnayrM7nGxzqU",
@@ -67,6 +67,7 @@ export default {
           messagingSenderId: "753779758705",
           appId: "1:753779758705:web:85e5262a6c5b0851"
         },
+        onFirebaseHosting: true,
         services: {
           auth: true,
           realtimeDb: true,
@@ -80,6 +81,15 @@ export default {
       }
     ]
   ],
+  pwa: {
+
+    workbox: {
+      importScripts: [
+        '/firebase-auth-sw.js'
+      ],
+      dev: false
+    }
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -108,13 +118,12 @@ export default {
     }
   },
   router: {
-    middleware: 'router-auth'
+    middleware: ['router-auth']
   },
   /*
   ** Build configuration
   */
   build: {
-    transpile: [/^nuxt-fire/],
     /*
     ** You can extend webpack config here
     */

@@ -5,6 +5,15 @@ export const state = () => ({
 })
 
 export const getters = {
+  getSortedTracks: state => [...state.tracks].sort(function (var1, var2) {
+    var a = new Date(var1.timestamp), b = new Date(var2.timestamp);
+    if (a > b)
+      return 1;
+    if (a < b)
+      return -1;
+
+    return 0;
+  }),
   getTracks: state => state.tracks,
   isFetching: state => state.isFetching
 }
@@ -31,27 +40,27 @@ export const mutations = {
 }
 
 export const actions = {
-  add(context, {caseId, track}) {
+  add(context, { caseId, track }) {
     delete track.uid
     this.$fireStore
-        .collection('users')
-        .doc(context.rootState.user.user.uid)
-        .collection('cases')
-        .doc(caseId)
-        .collection('tracks')
-        .add(track)
+      .collection('users')
+      .doc(context.rootState.user.user.uid)
+      .collection('cases')
+      .doc(caseId)
+      .collection('tracks')
+      .add(track)
   },
-  remove(context, {caseId, track}) {
+  remove(context, { caseId, track }) {
     this.$fireStore
-        .collection('users')
-        .doc(context.rootState.user.user.uid)
-        .collection('cases')
-        .doc(caseId)
-        .collection('tracks')
-        .doc(track.uid)
-        .delete()
+      .collection('users')
+      .doc(context.rootState.user.user.uid)
+      .collection('cases')
+      .doc(caseId)
+      .collection('tracks')
+      .doc(track.uid)
+      .delete()
   },
-  save(context, {caseId, track}) {
+  save(context, { caseId, track }) {
     if (context.state.tracks.find(tr => tr.uid === track.uid)) {
       this.$fireStore
         .collection('users')
@@ -60,7 +69,7 @@ export const actions = {
         .doc(caseId)
         .collection('tracks')
         .doc(track.uid)
-        .set(track, {merge: true})
+        .set(track, { merge: true })
     }
   },
   fetch(context, caseUid) {

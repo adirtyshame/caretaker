@@ -14,6 +14,7 @@
     <v-card-title>
       Anfahrten
       <v-spacer></v-spacer>
+      <v-btn :to="`${$route.params.caseId}/preview`">Vorschau</v-btn>
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
                 <v-btn color="primary" dark class="mb-2" v-on="on">Neue Anfahrt</v-btn>
