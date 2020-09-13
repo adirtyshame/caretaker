@@ -270,8 +270,8 @@ export default {
 
   },
   mounted() {
-    this.filteredTracks = this.tracks
     this.$store.dispatch('tracks/fetch', this.$route.params.caseId)
+    this.filteredTracks = this.tracks
   },
   watch: {
     dialog(val) {
