@@ -66,7 +66,7 @@ export const actions = {
       .collection('users')
       .doc(context.rootState.user.user.uid)
       .collection('cases')
-      .onSnapshot(snapshot => {
+      .onSnapshot({ includeMetadataChanges: true }, snapshot => {
         const cases = []
         snapshot.forEach(doc => {
           cases.push({

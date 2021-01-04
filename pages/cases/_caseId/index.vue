@@ -14,10 +14,10 @@
     <v-card-title>
       Anfahrten
       <v-spacer></v-spacer>
-      <v-btn :to="`${$route.params.caseId}/preview`">Vorschau</v-btn>
+      <v-btn :to="`${$route.params.caseId}/preview`" dark class="ma-2">Vorschau</v-btn>
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark class="mb-2" v-on="on">Neue Anfahrt</v-btn>
+                <v-btn color="primary" dark class="ma-2" v-on="on">Neue Anfahrt</v-btn>
               </template>
               <v-card>
                 <v-card-title>
@@ -71,12 +71,17 @@
     </v-card-title>
     <v-card-text>
 
-          <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Suche"
-              hide-details
-            ></v-text-field>
+      <div>
+        gefahrene Strecke: <b>{{ totalDistance }} km</b>
+      </div>
+
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Suche"
+        style="max-width: 200px"
+        hide-details
+      ></v-text-field>
             
       <v-data-table :headers="headers" :items="filteredTracks" sort-by="timestamp">
         <template slot="items" slot-scope="props">
@@ -186,10 +191,10 @@ export default {
       return this.$store.getters['tracks/getTracks']
     },
     totalDistance() {
-      return this.filteredTracks.reduce((sum, curr) => sum + curr.distance, 0)
+      return this.filteredTracks && this.filteredTracks.reduce((sum, curr) => sum + curr.distance, 0)
     },
     totalEffort() {
-      return this.filteredTracks.reduce((sum, curr) => sum + curr.effort, 0)
+      return this.filteredTracks && this.filteredTracks.reduce((sum, curr) => sum + curr.effort, 0)
     },
     formTitle() {
       return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag bearbeiten'
@@ -202,19 +207,19 @@ export default {
   },
   methods: {
     editItem(item) {
-      this.editedIndex = this.tracks.findIndex(e => e.uid === item.uid)
+      this.editedIndex = this.filteredTracks.findIndex(e => e.uid === item.uid)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     editCase(item) {
-      this.editedIndex = this.tracks.findIndex(e => e.uid === item.uid)
+      this.editedIndex = this.filteredTracks.findIndex(e => e.uid === item.uid)
       this.editedCase = Object.assign({}, this.currentCase)
       this.dialog1 = true
     },
 
     deleteItem(track) {
-      const index = this.tracks.findIndex(e => e.uid === track.uid)
+      const index = this.filteredTracks.findIndex(e => e.uid === track.uid)
       confirm('Are you sure you want to delete this item?') &&
         this.$store.dispatch('tracks/remove', {
           caseId: this.$route.params.caseId,
@@ -269,11 +274,13 @@ export default {
     }
 
   },
-  mounted() {
+  fetch() {
     this.$store.dispatch('tracks/fetch', this.$route.params.caseId)
-    this.filteredTracks = this.tracks
   },
   watch: {
+    tracks(val) {
+      this.filteredTracks = val
+    },
     dialog(val) {
       val || this.close()
     },

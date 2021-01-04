@@ -6,7 +6,8 @@ export const state = () => ({
 
 export const getters = {
   getSortedTracks: state => [...state.tracks].sort(function (var1, var2) {
-    var a = new Date(var1.timestamp), b = new Date(var2.timestamp);
+    let a = new Date(var1.timestamp)
+    let b = new Date(var2.timestamp)
     if (a > b)
       return 1;
     if (a < b)
@@ -79,7 +80,7 @@ export const actions = {
       .collection('cases')
       .doc(caseUid)
       .collection('tracks')
-      .onSnapshot(snapshot => {
+      .onSnapshot({ includeMetadataChanges: true }, snapshot => {
         const tracks = []
         snapshot.forEach(doc => {
           tracks.push({
