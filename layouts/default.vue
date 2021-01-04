@@ -120,9 +120,6 @@ export default {
     logout() {
       this.$store.dispatch('user/logout')
     }
-  },
-  mounted() {
-    this.$store.dispatch('cases/fetch')
   }
 }
 </script>

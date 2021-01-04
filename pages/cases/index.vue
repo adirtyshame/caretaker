@@ -210,10 +210,13 @@ export default {
       return this.levelsOfCare[val || 0].color
     }
   },
-  mounted() {
-    this.filteredCases = this.cases
+  fetch() {
+    this.$store.dispatch('cases/fetch')
   },
   watch: {
+    cases(val) {
+      this.filteredCases = val
+    },
     dialog(val) {
       val || this.closeCase()
     },
