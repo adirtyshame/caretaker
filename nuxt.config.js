@@ -90,7 +90,7 @@ export default {
   pwa: {
     workbox: {
       importScripts: [
-        '/firebase-auth-sw.js'
+        // '/firebase-auth-sw.js'
       ],
       dev: false
     }
