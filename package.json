@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@nuxtjs/date-fns": "^1.4.0",
-    "@nuxtjs/vuetify": "^1.11.2",
+    "@nuxtjs/vuetify": "^1.11.3",
     "@vue/test-utils": "^1.1.0",
     "babel-jest": "^24.1.0",
     "eslint-config-prettier": "^4.1.0",
