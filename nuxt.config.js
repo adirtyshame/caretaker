@@ -54,6 +54,7 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    '@nuxtjs/toast',
     // Firebase stuff
     [
       '@nuxtjs/firebase',
@@ -81,8 +82,12 @@ export default {
       }
     ]
   ],
-  pwa: {
 
+  toast: {
+    position: 'top-center',
+  },
+
+  pwa: {
     workbox: {
       importScripts: [
         '/firebase-auth-sw.js'

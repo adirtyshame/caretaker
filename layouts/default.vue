@@ -24,7 +24,7 @@
         <v-divider></v-divider>
         <v-list-item to="/settings" router exact>
           <v-list-item-action>
-            <v-icon>mdi-settings</v-icon>
+            <v-icon>mdi-cogs</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title v-text="'Einstellungen'" />
@@ -80,7 +80,7 @@
 
     <v-btn to="/settings">
       <span>Einstellungen</span>
-      <v-icon>mdi-settings</v-icon>
+      <v-icon>mdi-cogs</v-icon>
     </v-btn>
 
     <v-btn @click="logout">
@@ -119,6 +119,18 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('user/logout')
+    }
+  },
+  async mounted() {
+    const workbox = await window.$workbox;
+    if (workbox) {
+      workbox.addEventListener('installed', (event) => {
+        // If we don't do this we'll be displaying the notification after the initial installation, which isn't perferred.
+        if (event.isUpdate) {
+          // whatever logic you want to use to notify the user that they need to refresh the page.
+          this.$toast.show('Software wurde aktualisiert. Bitte laden Sie die Seite neu.')
+        }
+      });
     }
   }
 }

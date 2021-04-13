@@ -16,6 +16,7 @@
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/firebase": "^6.1.1",
     "@nuxtjs/pwa": "^3.0.2",
+    "@nuxtjs/toast": "^3.3.1",
     "firebase": "^7.20.0",
     "nuxt": "^2.14.5",
     "nuxt-offline-alert": "0.0.7"
