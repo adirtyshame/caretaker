@@ -1,5 +1,5 @@
 export default function (context) {
-  context.app.$fireAuth.onAuthStateChanged((user) => {
+  context.app.$fire.auth.onAuthStateChanged((user) => {
     if (user) {
       context.store.dispatch('user/setAuthenticatedUser', user)
         .then(() => context.store.dispatch('cases/fetch'))

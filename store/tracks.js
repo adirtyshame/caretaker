@@ -43,7 +43,7 @@ export const mutations = {
 export const actions = {
   add(context, { caseId, track }) {
     delete track.uid
-    this.$fireStore
+    this.$fire.firestore
       .collection('users')
       .doc(context.rootState.user.user.uid)
       .collection('cases')
@@ -52,7 +52,7 @@ export const actions = {
       .add(track)
   },
   remove(context, { caseId, track }) {
-    this.$fireStore
+    this.$fire.firestore
       .collection('users')
       .doc(context.rootState.user.user.uid)
       .collection('cases')
@@ -63,7 +63,7 @@ export const actions = {
   },
   save(context, { caseId, track }) {
     if (context.state.tracks.find(tr => tr.uid === track.uid)) {
-      this.$fireStore
+      this.$fire.firestore
         .collection('users')
         .doc(context.rootState.user.user.uid)
         .collection('cases')
@@ -74,7 +74,7 @@ export const actions = {
     }
   },
   fetch(context, caseUid) {
-    this.$fireStore
+    this.$fire.firestore
       .collection('users')
       .doc(context.rootState.user.user.uid)
       .collection('cases')

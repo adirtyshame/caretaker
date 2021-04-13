@@ -71,7 +71,7 @@ export default {
         onFirebaseHosting: true,
         services: {
           auth: true,
-          realtimeDb: true,
+          database: true,
           firestore: {
             static: false, // default
             preload: true, // default

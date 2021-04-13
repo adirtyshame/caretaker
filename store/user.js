@@ -28,16 +28,16 @@ export const actions = {
         context.commit('setDarkMode', mode)
     },
     logout(context) {
-        this.$fireAuth.signOut().then(() => {
+        this.$fire.auth.signOut().then(() => {
             context.dispatch('setAuthenticatedUser', null)
             this.$router.push('/login')
-          }).catch(err => console.log(error))
+        }).catch(err => console.log(error))
     },
     googleSignIn(context) {
-        const provider = new this.$fireAuthObj.GoogleAuthProvider()
+        const provider = new this.$fireModule.auth.GoogleAuthProvider()
         return new Promise(async (resolve, reject) => {
             try {
-                const result = await this.$fireAuth.signInWithPopup(provider)
+                const result = await this.$fire.auth.signInWithPopup(provider)
                 context.dispatch('setAuthenticatedUser', result.user)
                 resolve()
             } catch(e) {
@@ -45,11 +45,11 @@ export const actions = {
                 reject(e)
             }
         });
-      },
-      async passwordSignIn(context, {email, password}) {
+    },
+    async passwordSignIn(context, {email, password}) {
         return new Promise(async (resolve, reject) => {
             try {
-                const result = await this.$fireAuth.signInWithEmailAndPassword(email, password)
+                const result = await this.$fire.auth.signInWithEmailAndPassword(email, password)
                 context.dispatch('setAuthenticatedUser', result.user)
                 resolve()
             } catch(e) {
@@ -57,11 +57,11 @@ export const actions = {
                 reject(e)
             }
         });
-      },
-      async register(context, {email, password}) {
+    },
+    async register(context, {email, password}) {
         return new Promise(async (resolve, reject) => {
             try {
-                const result = await this.$fireAuth.createUserWithEmailAndPassword(email, password)
+                const result = await this.$fire.auth.createUserWithEmailAndPassword(email, password)
                 context.dispatch('setAuthenticatedUser', result.user)
                 resolve()
             } catch(e) {
@@ -69,7 +69,7 @@ export const actions = {
                 reject(e)
             }
         });
-      },
+    },
     setAuthenticatedUser(context, user) {
         if (user) {
             const u = {
@@ -80,7 +80,7 @@ export const actions = {
                 providerId: user.providerData[0].providerId
             }
             context.commit('setUser', u)
-            this.$fireStore.collection('users').doc(u.uid).set(u)
+            this.$fire.firestore.collection('users').doc(u.uid).set(u)
         } else {
             context.commit('setUser', undefined)
         }
