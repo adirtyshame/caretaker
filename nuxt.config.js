@@ -68,7 +68,7 @@ export default {
           messagingSenderId: "753779758705",
           appId: "1:753779758705:web:85e5262a6c5b0851"
         },
-        onFirebaseHosting: false,
+        onFirebaseHosting: true,
         services: {
           auth: true,
           database: true,
