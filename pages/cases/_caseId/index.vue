@@ -5,7 +5,7 @@
       <v-btn @click="$router.back()" icon>
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
-     zurück
+    zurück
     </v-toolbar-title>
   </v-toolbar>
   
@@ -95,8 +95,8 @@
             </tr>
         </template>
         <template v-slot:item.timestamp="{ item }">
-           <span>{{ item.timestamp ? $dateFns.format(item.timestamp, 'dd.MM.yyyy') : '' }}</span>
-         </template>
+          <span>{{ item.timestamp ? $dateFns.format(item.timestamp, 'dd.MM.yyyy') : '' }}</span>
+        </template>
         <template v-slot:item.action="{ item }">
           <v-icon class="mr-2" @click="editItem(item)">mdi-pencil-outline</v-icon>
           <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
